@@ -12,15 +12,6 @@ my $userAgent = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0});
 $userAgent->agent("reshade-on-unix/0.1");
 $userAgent->show_progress(1);
 
-sub reShadeVersion {
-    my $req = HTTP::Request->new(GET => "https://api.github.com/repos/crosire/reshade/tags");
-    my $response = $userAgent->request($req);
-    $response->is_success or die $response->status_line;
-    my ($version) = $response->decoded_content =~ /v([\d.]+)/ 
-        or die "Could not extract version info";
-    return $version;
-}
-
 sub downloadFile {
     my $url = $_[0];
     my $file = $_[1];
@@ -59,7 +50,7 @@ my $gamePath = getGamePath;
 print "Installing ReShade into: [${gamePath}]\n";
 
 my $reshadeSetup = $gamePath . "reshade_setup.exe";
-downloadFile("https://reshade.me/downloads/ReShade_Setup_" . reShadeVersion . "_Addon.exe", $reshadeSetup);
+downloadFile("https://reshade.me/downloads/ReShade_Setup_6.1.1_Addon.exe", $reshadeSetup);
 my $exeContent = read_file $reshadeSetup;
 unlink $reshadeSetup;
 
